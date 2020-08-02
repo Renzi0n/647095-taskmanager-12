@@ -389,8 +389,8 @@ const siteBoardNode = siteMainNode.querySelector(`.board`);
 const siteTasksBoardNode = siteBoardNode.querySelector(`.board__tasks`);
 
 render(siteBoardNode, createSortTemplate(), `afterbegin`);
+render(siteBoardNode, createLoadMoreBtnTemplate(), `beforeend`);
 for (let i = 0; i < TASKS_COUNT; i++) {
   render(siteTasksBoardNode, createTaskTemplate(), `afterbegin`);
 }
 render(siteTasksBoardNode, createTaskEditTemplate(), `afterbegin`);
-render(siteBoardNode, createLoadMoreBtnTemplate(), `beforeend`);
