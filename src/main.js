@@ -1,6 +1,8 @@
-`use strict`;
+'use strict';
+
 
 const TASKS_COUNT = 3;
+
 
 const createMenuTemplate = () => {
   return (
@@ -379,6 +381,7 @@ const render = (container, template, place) => {
 
 
 const siteMainNode = document.querySelector(`.main`);
+
 const siteHeaderNode = siteMainNode.querySelector(`.main__control`);
 
 render(siteHeaderNode, createMenuTemplate(), `beforeend`);
