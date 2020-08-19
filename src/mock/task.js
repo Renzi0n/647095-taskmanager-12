@@ -1,16 +1,15 @@
 import {TASK_COLORS} from '../consts.js';
-import {getRandomInteger, getRandomArrElement} from "../utils.js";
+import {getRandomInteger, getRandomElements, getRandomBooleanValue} from "../utils.js";
 
 const DESCRIPTIONS = [
   `Посмотреть лекцию`,
   `Приготовить обед`,
   `Почитать книгу`,
 ];
+const MAX_DAYS_GAP = 7;
 
 const generateDate = () => {
-  const MAX_DAYS_GAP = 7;
-
-  const isDate = Boolean(getRandomInteger(0, 1));
+  const isDate = getRandomBooleanValue();
 
   if (!isDate) {
     return null;
@@ -29,9 +28,9 @@ const generateRepeating = () => {
   return {
     mo: false,
     tu: false,
-    we: Boolean(getRandomInteger(0, 1)),
+    we: getRandomBooleanValue(),
     th: false,
-    fr: Boolean(getRandomInteger(0, 1)),
+    fr: getRandomBooleanValue(),
     sa: false,
     su: false,
   };
@@ -52,11 +51,11 @@ export const generateTask = () => {
     };
 
   return {
-    description: getRandomArrElement(DESCRIPTIONS),
+    description: getRandomElements(DESCRIPTIONS),
     dueDate,
     repeating,
-    color: getRandomArrElement(TASK_COLORS),
-    isArchive: Boolean(getRandomInteger(0, 1)),
-    isFavorite: Boolean(getRandomInteger(0, 1)),
+    color: getRandomElements(TASK_COLORS),
+    isArchive: getRandomBooleanValue(),
+    isFavorite: getRandomBooleanValue(),
   };
 };

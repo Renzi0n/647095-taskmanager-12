@@ -3,8 +3,14 @@ import {isTaskExpired, isTaskRepeating, humanizeDueDate} from '../utils.js';
 export const createTaskTemplate = (tasksData) => {
   const {color, description, dueDate, repeating, isArchive, isFavorite} = tasksData;
 
-  const date = dueDate !== null
-    ? humanizeDueDate(dueDate)
+  const dateTemplate = dueDate !== null
+    ? `<div class="card__dates">
+      <div class="card__date-deadline">
+        <p class="card__input-deadline-wrap">
+          <span class="card__date">${humanizeDueDate(dueDate)}</span>
+        </p>
+      </div>
+    </div>`
     : ``;
 
   const deadlineClassName = isTaskExpired(dueDate)
@@ -54,13 +60,7 @@ export const createTaskTemplate = (tasksData) => {
 
           <div class="card__settings">
             <div class="card__details">
-              <div class="card__dates">
-                <div class="card__date-deadline">
-                  <p class="card__input-deadline-wrap">
-                    <span class="card__date">${date}</span>
-                  </p>
-                </div>
-              </div>
+              ${dateTemplate}
             </div>
           </div>
         </div>
