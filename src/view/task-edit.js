@@ -1,21 +1,6 @@
 import {TASK_COLORS} from '../consts.js';
 import {isTaskExpired, isTaskRepeating, humanizeDueDate, createElement} from '../utils.js';
 
-const BLACK_TASK = {
-  color: `black`,
-  description: ``,
-  dueDate: null,
-  repeating: {
-    mo: false,
-    tu: false,
-    we: false,
-    th: false,
-    fr: false,
-    sa: false,
-    su: false
-  }
-};
-
 const createTaskEditDateTemplate = (dueDate) => {
   return (
     `<button class="card__date-deadline-toggle" type="button">
@@ -140,7 +125,24 @@ const createTaskEditTemplate = (tasksData = {}) => {
 };
 
 export default class TaskEdit {
-  constructor(task = BLACK_TASK) {
+  _getDefaultTask() {
+    return {
+      color: TASK_COLORS[0],
+      description: ``,
+      dueDate: null,
+      repeating: {
+        mo: false,
+        tu: false,
+        we: false,
+        th: false,
+        fr: false,
+        sa: false,
+        su: false
+      }
+    };
+  }
+
+  constructor(task = this._getDefaultTask()) {
     this._task = task;
     this._element = null;
   }
