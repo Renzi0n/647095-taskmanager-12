@@ -1,13 +1,14 @@
 import MenuView from './view/menu.js';
 import BoardView from './view/board.js';
 import SortView from './view/sort.js';
-import LoadMoreBtnView from './view/loadMoreBtn.js';
+import LoadMoreBtnView from './view/load-more-btn.js';
 import FilterView from './view/filter.js';
 import TaskView from './view/task.js';
-import TaskEditView from './view/taskEdit.js';
+import TaskEditView from './view/task-edit.js';
+import NoTaskView from './view/no-task.js';
 import {generateTask} from "./mock/task.js";
 import {generateFilter} from "./mock/filter.js";
-import {render, RENDER_POSITION} from "./utils.js";
+import {render, RenderPosition} from "./utils.js";
 
 
 const TASKS_COUNT = 22;
@@ -45,7 +46,7 @@ const renderTask = (taskElement, task) => {
     replaceFormToCard();
   });
 
-  render(taskElement, taskComponent.getElement(), RENDER_POSITION.beforeend);
+  render(taskElement, taskComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
 
@@ -53,40 +54,53 @@ const tasksData = new Array(TASKS_COUNT).fill().map(generateTask);
 const filtersData = generateFilter(tasksData);
 
 
-const siteMainNode = document.querySelector(`.main`);
+const renderBoard = (boardContainer, boardTasks) => {
+  const boardComponent = new BoardView();
 
-const siteHeaderNode = siteMainNode.querySelector(`.main__control`);
+  const siteTasksBoardNode = boardComponent.getElement().querySelector(`.board__tasks`);
 
-render(siteHeaderNode, new MenuView().getElement(), RENDER_POSITION.beforeend);
-render(siteMainNode, new FilterView(filtersData).getElement(), RENDER_POSITION.beforeend);
-render(siteMainNode, new BoardView().getElement(), RENDER_POSITION.beforeend);
-
-const siteBoardNode = siteMainNode.querySelector(`.board`);
-const siteTasksBoardNode = siteBoardNode.querySelector(`.board__tasks`);
-
-render(siteBoardNode, new SortView().getElement(), RENDER_POSITION.afterbegin);
-
-for (let i = 0; i < Math.min(tasksData.length, TASKS_COUNT_PER_STEP); i++) {
-  renderTask(siteTasksBoardNode, tasksData[i]);
-}
-
-if (tasksData.length > TASKS_COUNT_PER_STEP) {
   let renderTemplateedTaskCount = TASKS_COUNT_PER_STEP;
 
-  render(siteBoardNode, new LoadMoreBtnView().getElement(), RENDER_POSITION.beforeend);
+  render(boardContainer, boardComponent.getElement(), RenderPosition.BEFOREEND);
 
-  const loadMoreButton = siteBoardNode.querySelector(`.load-more`);
+  if (tasksData.every((task) => task.isArchive)) {
+    render(boardComponent.getElement(), new NoTaskView().getElement(), RenderPosition.BEFOREEND);
+    return;
+  }
 
-  loadMoreButton.addEventListener(`click`, (evt) => {
-    evt.preventDefault();
-    tasksData
-      .slice(renderTemplateedTaskCount, renderTemplateedTaskCount + TASKS_COUNT_PER_STEP)
-      .forEach((task) => renderTask(siteTasksBoardNode, task));
+  render(boardComponent.getElement(), new SortView().getElement(), RenderPosition.AFTERBEGIN);
 
-    renderTemplateedTaskCount += TASKS_COUNT_PER_STEP;
+  boardTasks
+    .slice(0, Math.min(boardTasks.length, TASKS_COUNT_PER_STEP))
+    .forEach((boardTask) => renderTask(siteTasksBoardNode, boardTask));
 
-    if (renderTemplateedTaskCount >= tasksData.length) {
-      loadMoreButton.remove();
-    }
-  });
-}
+  if (boardTasks.length > TASKS_COUNT_PER_STEP) {
+
+    const loadMoreBtnComponent = new LoadMoreBtnView();
+
+    render(boardComponent.getElement(), loadMoreBtnComponent.getElement(), RenderPosition.BEFOREEND);
+
+    loadMoreBtnComponent.getElement().addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      boardTasks
+        .slice(renderTemplateedTaskCount, renderTemplateedTaskCount + TASKS_COUNT_PER_STEP)
+        .forEach((task) => renderTask(siteTasksBoardNode, task));
+
+      renderTemplateedTaskCount += TASKS_COUNT_PER_STEP;
+
+      if (renderTemplateedTaskCount >= boardTasks.length) {
+        loadMoreBtnComponent.getElement().remove();
+      }
+    });
+  }
+};
+
+const siteMainNode = document.querySelector(`.main`);
+const siteHeaderNode = siteMainNode.querySelector(`.main__control`);
+
+render(siteHeaderNode, new MenuView().getElement(), RenderPosition.BEFOREEND);
+render(siteMainNode, new FilterView(filtersData).getElement(), RenderPosition.BEFOREEND);
+
+renderBoard(document.querySelector(`main`), tasksData);
+
+
