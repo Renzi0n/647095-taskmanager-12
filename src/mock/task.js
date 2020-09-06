@@ -25,12 +25,14 @@ const generateDate = () => {
 };
 
 const generateRepeating = () => {
+  const randomBooleanValue = getRandomBooleanValue();
+
   return {
     mo: false,
     tu: false,
-    we: getRandomBooleanValue(),
+    we: randomBooleanValue,
     th: false,
-    fr: getRandomBooleanValue(),
+    fr: randomBooleanValue === false ? true : getRandomBooleanValue(),
     sa: false,
     su: false,
   };

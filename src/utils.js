@@ -50,3 +50,31 @@ export const humanizeDueDate = (dueDate) => {
 export const getRandomBooleanValue = () => {
   return Boolean(getRandomInteger(0, 1));
 };
+
+export const RENDER_POSITION = {
+  afterbegin: `afterbegin`,
+  beforeend: `beforeend`
+};
+
+export const render = (container, element, place) => {
+  switch (place) {
+    case RENDER_POSITION.afterbegin:
+      container.prepend(element);
+      break;
+    case RENDER_POSITION.beforeend:
+      container.append(element);
+      break;
+  }
+};
+
+export const renderTemplate = (container, template, place) => {
+  container.insertAdjacentHTML(place, template);
+};
+
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
+};
+
