@@ -1,5 +1,20 @@
 import {TASK_COLORS} from '../consts.js';
-import {isTaskExpired, isTaskRepeating, humanizeDueDate} from '../utils.js';
+import {isTaskExpired, isTaskRepeating, humanizeDueDate, createElement} from '../utils.js';
+
+const BLACK_TASK = {
+  color: `black`,
+  description: ``,
+  dueDate: null,
+  repeating: {
+    mo: false,
+    tu: false,
+    we: false,
+    th: false,
+    fr: false,
+    sa: false,
+    su: false
+  }
+};
 
 const createTaskEditDateTemplate = (dueDate) => {
   return (
@@ -61,21 +76,8 @@ const createTaskEditColorsTemplate = (currentColor) => {
   );
 };
 
-export const createTaskEditTemplate = (tasksData = {}) => {
-  const {
-    color = `black`,
-    description = ``,
-    dueDate = null,
-    repeating = {
-      mo: false,
-      tu: false,
-      we: false,
-      th: false,
-      fr: false,
-      sa: false,
-      su: false
-    }
-  } = tasksData;
+const createTaskEditTemplate = (tasksData = {}) => {
+  const {color, description, dueDate, repeating} = tasksData;
 
   const dateTemplate = createTaskEditDateTemplate(dueDate);
   const repeatingTemplate = createTaskEditRepeatingTemplate(repeating);
@@ -136,3 +138,26 @@ export const createTaskEditTemplate = (tasksData = {}) => {
     </article>`
   );
 };
+
+export default class TaskEdit {
+  constructor(task = BLACK_TASK) {
+    this._task = task;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTaskEditTemplate(this._task);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
