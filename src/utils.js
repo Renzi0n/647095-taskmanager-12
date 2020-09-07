@@ -51,17 +51,17 @@ export const getRandomBooleanValue = () => {
   return Boolean(getRandomInteger(0, 1));
 };
 
-export const RENDER_POSITION = {
-  afterbegin: `afterbegin`,
-  beforeend: `beforeend`
+export const RenderPosition = {
+  AFTERBEGIN: `AFTERBEGIN`,
+  BEFOREEND: `BEFOREEND`
 };
 
 export const render = (container, element, place) => {
   switch (place) {
-    case RENDER_POSITION.afterbegin:
+    case RenderPosition.AFTERBEGIN:
       container.prepend(element);
       break;
-    case RENDER_POSITION.beforeend:
+    case RenderPosition.BEFOREEND:
       container.append(element);
       break;
   }
@@ -75,6 +75,6 @@ export const createElement = (template) => {
   const newElement = document.createElement(`div`);
   newElement.innerHTML = template;
 
-  return newElement.firstChild;
+  return newElement.firstElementChild;
 };
 
