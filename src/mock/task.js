@@ -1,5 +1,5 @@
 import {TASK_COLORS} from '../consts.js';
-import {getRandomInteger, getRandomElements, getRandomBooleanValue} from "../utils.js";
+import {getRandomInteger, getRandomElements, getRandomBooleanValue} from "../utils/common.js";
 
 const DESCRIPTIONS = [
   `Посмотреть лекцию`,
