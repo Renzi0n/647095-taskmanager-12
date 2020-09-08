@@ -125,23 +125,6 @@ const createTaskEditTemplate = (tasksData = {}) => {
 };
 
 export default class TaskEdit {
-  _getDefaultTask() {
-    return {
-      color: TASK_COLORS[0],
-      description: ``,
-      dueDate: null,
-      repeating: {
-        mo: false,
-        tu: false,
-        we: false,
-        th: false,
-        fr: false,
-        sa: false,
-        su: false
-      }
-    };
-  }
-
   constructor(task = this._getDefaultTask()) {
     this._task = task;
     this._element = null;
@@ -157,6 +140,23 @@ export default class TaskEdit {
     }
 
     return this._element;
+  }
+
+  _getDefaultTask() {
+    return {
+      color: TASK_COLORS[0],
+      description: ``,
+      dueDate: null,
+      repeating: {
+        mo: false,
+        tu: false,
+        we: false,
+        th: false,
+        fr: false,
+        sa: false,
+        su: false
+      }
+    };
   }
 
   removeElement() {

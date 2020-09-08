@@ -15,6 +15,10 @@ const TASKS_COUNT = 22;
 const TASKS_COUNT_PER_STEP = 8;
 
 
+const tasksData = new Array(TASKS_COUNT).fill().map(generateTask);
+const filtersData = generateFilter(tasksData);
+
+
 const renderTask = (taskElement, task) => {
   const taskComponent = new TaskView(task);
   const taskEditComponent = new TaskEditView(task);
@@ -48,10 +52,6 @@ const renderTask = (taskElement, task) => {
 
   render(taskElement, taskComponent.getElement(), RenderPosition.BEFOREEND);
 };
-
-
-const tasksData = new Array(TASKS_COUNT).fill().map(generateTask);
-const filtersData = generateFilter(tasksData);
 
 
 const renderBoard = (boardContainer, boardTasks) => {
