@@ -8,6 +8,8 @@ const DESCRIPTIONS = [
 ];
 const MAX_DAYS_GAP = 7;
 
+const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
+
 const generateDate = () => {
   const isDate = getRandomBooleanValue();
 
@@ -59,5 +61,6 @@ export const generateTask = () => {
     color: getRandomElements(TASK_COLORS),
     isArchive: getRandomBooleanValue(),
     isFavorite: getRandomBooleanValue(),
+    id: generateId(),
   };
 };
