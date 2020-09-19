@@ -130,7 +130,7 @@ export default class TaskEdit extends SmartView {
   constructor(task) {
     super();
 
-    this._data = TaskEdit.parseTaskToData(task) || this._getDefaultTask();
+    this._data = task ? TaskEdit.parseTaskToData(task) : this._getDefaultTask();
     this._datepicker = null;
 
     this._descriptionInputHandler = this._descriptionInputHandler.bind(this);

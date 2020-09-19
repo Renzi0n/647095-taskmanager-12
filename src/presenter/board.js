@@ -3,10 +3,11 @@ import SortView from '../view/sort.js';
 import LoadMoreBtnView from '../view/load-more-btn.js';
 import NoTaskView from '../view/no-task.js';
 import TaskPresenter from './task.js';
+import TaskNewPresenter from "./task-new.js";
 import {getFilteredTasks} from "../utils/filter.js";
 import {render, RenderPosition, remove} from "../utils/render.js";
 import {sortTaskUp, sortTaskDown} from "../utils/task.js";
-import {SortType, UpdateType, UserAction} from "../consts.js";
+import {SortType, UpdateType, UserAction, FilterType} from "../consts.js";
 
 const TASK_COUNT_PER_STEP = 8;
 
@@ -23,6 +24,8 @@ export default class Board {
     this._boardComponent = new BoardView();
     this._noTaskComponent = new NoTaskView();
 
+    this._taskListNode = this._boardComponent.getElement().querySelector(`.board__tasks`);
+
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
@@ -31,6 +34,8 @@ export default class Board {
 
     this._tasksModel.addObserver(this._handleModelEvent);
     this._filterModel.addObserver(this._handleModelEvent);
+
+    this._taskNewPresenter = new TaskNewPresenter(this._taskListNode, this._handleViewAction);
   }
 
   init() {
@@ -39,6 +44,12 @@ export default class Board {
     render(this._boardContainer, this._boardComponent, RenderPosition.BEFOREEND);
 
     this._renderBoard();
+  }
+
+  createTask() {
+    this._currentSortType = SortType.DEFAULT;
+    this._filterModel.setFilter(UpdateType.MAJOR, FilterType.ALL);
+    this._taskNewPresenter.init();
   }
 
   _getTasks() {
@@ -110,8 +121,6 @@ export default class Board {
       return;
     }
 
-    this._taskListNode = this._boardComponent.getElement().querySelector(`.board__tasks`);
-
     this._renderSort();
     this._renderTasks(tasks.slice(0, Math.min(taskCount, this._renderedTaskCount)));
 
@@ -123,6 +132,7 @@ export default class Board {
   _clearBoard({resetRenderedTaskCount = false, resetSortType = false} = {}) {
     const taskCount = this._getTasks().length;
 
+    this._taskNewPresenter.destroy();
     Object
       .values(this._taskPresenter)
       .forEach((presenter) => presenter.destroy());
@@ -187,6 +197,7 @@ export default class Board {
   }
 
   _handleModeChange() {
+    this._taskNewPresenter.destroy();
     Object
       .values(this._taskPresenter)
       .forEach((presenter) => presenter.resetView());

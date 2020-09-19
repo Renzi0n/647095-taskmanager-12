@@ -25,10 +25,14 @@ const siteHeaderNode = siteMainNode.querySelector(`.main__control`);
 const boardPresenter = new BoardPresenter(siteMainNode, tasksModel, filterModel);
 const filterPresenter = new FilterPresenter(siteMainNode, filterModel, tasksModel);
 
-
-render(siteHeaderNode, new MenuView(), RenderPosition.BEFOREEND);
+const menuComponent = new MenuView();
+render(siteHeaderNode, menuComponent, RenderPosition.BEFOREEND);
 
 filterPresenter.init();
 boardPresenter.init();
 
+menuComponent.getElement().querySelector(`#control__new-task`).addEventListener(`click`, (evt) => {
+  evt.preventDefault();
+  boardPresenter.createTask();
+});
 

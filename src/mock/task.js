@@ -8,7 +8,7 @@ const DESCRIPTIONS = [
 ];
 const MAX_DAYS_GAP = 7;
 
-const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
+export const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
 
 const generateDate = () => {
   const isDate = getRandomBooleanValue();
